@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Find Recipes</title>
+  <link rel="stylesheet" href="{% static 'css/recipe_detail.css' %}">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="logo">🍳 <strong>RecipeFinder</strong></div>
+    <nav>
+      <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
+      <a href="{% url 'app:favorites' %}">❤️ Favorites</a>
+      <a href="{% url 'app:recently_viewed' %}">🕒 Recently Viewed</a>
+      <a href="{% url 'app:login' %}">Sign In</a>
+      <a href="{% url 'app:signup' %}" class="btn-primary">Get Started</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>What's in Your Kitchen?</h1>
+    <p>Enter your ingredients and discover delicious recipes you can make</p>
+
+    <form method="GET" class="search-bar">
+      <input type="text" name="ingredients" placeholder="e.g. chicken, tomato" value="{{ ingredients }}" required>
+      <button type="submit" class="btn primary">
+        🔍 Find Recipes
+      </button>
+    </form>
+
+  </section>
+
+  <main class="content">
+
+    <!-- FILTERS -->
+    <aside class="filters">
+      <h3>Filters</h3>
+
+      <label>Diet Preference</label>
+      <select name="diet" form="filter-form">
+        <option value="">Any</option>
+        <option value="vegetarian">Vegetarian</option>
+        <option value="vegan">Vegan</option>
+        <option value="gluten free">Gluten Free</option>
+      </select>
+
+      <label>Max Prep Time</label>
+      <select name="time" form="filter-form">
+        <option value="">Any</option>
+        <option value="15">15 min</option>
+        <option value="30">30 min</option>
+        <option value="60">60 min</option>
+      </select>
+    </aside>
+
+    <!-- RECIPES RESULT SECTION -->
+    {% if recipes %}
+    <div class="recipes-grid">
+
+      {% for recipe in recipes %}
+      <a href="{% url 'app:single_recipe' recipe.id %}" class="recipe-card">
+
+        <div class="recipe-image">
+          <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+        </div>
+
+        <div class="recipe-info">
+          <h3>{{ recipe.title }}</h3>
+          <p>⏱ {{ recipe.readyInMinutes }} min</p>
+        </div>
+
+      </a>
+      {% endfor %}
+
+    </div>
+    {% else %}
+    <div class="empty-state-wrapper">
+      <div class="empty-state">
+        <div class="empty-icon">👨‍🍳</div>
+        <h2>No recipes found</h2>
+        <p>
+          Try adding different ingredients or adjusting your filters
+          to find more recipes.
+        </p>
+      </div>
+    </div>
+    {% endif %}
+
+
+
+  </main>
+
+</body>
+
+</html>

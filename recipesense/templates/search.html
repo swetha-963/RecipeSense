@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>Search Recipes</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Search Recipes</h2>
+
+  <!-- 🔍 Search Form -->
+  <form method="POST" class="search-form">
+    {% csrf_token %}
+    <input 
+      type="text" 
+      name="query" 
+      placeholder="Search recipes (eg: pasta, pizza)" 
+      required
+    >
+    <button type="submit" class="btn primary">Search</button>
+  </form>
+
+  <!-- 📦 Results -->
+  {% if recipes %}
+    <div class="grid">
+      {% for recipe in recipes %}
+        <div class="card">
+          <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+          <h3>{{ recipe.title }}</h3>
+
+          <!-- View recipe on Spoonacular -->
+          <a 
+            href="https://spoonacular.com/recipes/{{ recipe.title|slugify }}-{{ recipe.id }}" 
+            target="_blank"
+            class="btn secondary"
+          >
+            View Recipe
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <p class="no-results">No recipes found. Try another search 🍽️</p>
+  {% endif %}
+
+</div>
+
+</body>
+</html>

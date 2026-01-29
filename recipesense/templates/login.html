@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-container">
+    <div class="logo-icon">🍳</div>
+    <h1>Recipe<span>Finder</span></h1>
+    <p class="subtitle">Discover healthy recipes tailored to your ingredients</p>
+  </div>
+
+  <!-- <div class="tab-switcher">
+    <button class="tab active">Sign In</button>
+    <button class="tab">Sign Up</button>
+  </div> -->
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <label>Email</label>
+    <div class="input-group">
+      <input type="email" name="email" placeholder="you@example.com" required>
+    </div>
+    
+    <label>Password</label>
+    <div class="input-group">
+      <input type="password" name="password" placeholder="••••••••" required>
+    </div>
+
+    <button type="submit" class="btn-primary">Sign In</button>
+  </form>
+
+  <a href="/" class="back-link">← Back to home</a>
+</div>
+
+</body>
+</html>

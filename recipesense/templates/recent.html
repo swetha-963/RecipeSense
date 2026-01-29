@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/recent.css' %}">
+
+</head>
+
+<body>
+    <h2 class="section-title">🕒 Recently Viewed</h2>
+    <div class="recipes-row">
+        {% for recipe in recent %}
+        <div class="mini-card">
+            <img src="{{ recipe.image }}">
+            <p>{{ recipe.title }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>

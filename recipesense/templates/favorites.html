@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Favorites</title>
+  <link rel="stylesheet" href="{% static 'css/favorites.css' %}">
+</head>
+<body>
+
+<header class="topbar">
+  <h2>❤️ My Favorite Recipes</h2>
+  <a href="{% url 'app:recipe_detail' %}">← Back</a>
+</header>
+
+<main class="favorites-grid">
+  {% for fav in favorites %}
+    <a href="{% url 'app:single_recipe' fav.recipe_id %}" class="fav-card">
+      <img src="{{ fav.image }}">
+      <div class="info">
+        <h3>{{ fav.title }}</h3>
+        <p>⏱ {{ fav.ready_in_minutes }} min</p>
+      </div>
+    </a>
+  {% empty %}
+    <div class="empty">
+      <h3>No favorites yet</h3>
+      <p>Start saving recipes you love 🍳</p>
+    </div>
+  {% endfor %}
+</main>
+
+</body>
+</html>

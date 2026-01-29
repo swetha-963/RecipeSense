@@ -1,0 +1,134 @@
+/* Base Styles */
+body {
+    background-color: #fdf8f5; /* Light cream background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Logo & Text */
+.logo-icon {
+    background-color: #f28132;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 24px;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+h1 span {
+    color: #f28132;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 30px;
+}
+
+/* Tab Switcher */
+.tab-switcher {
+    background: #f3f0ee;
+    padding: 4px;
+    border-radius: 10px;
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.tab {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background: transparent;
+    color: #888;
+}
+
+.tab.active {
+    background: white;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Form Styling */
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+    background-color: #fafafa;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #f28132;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    background-color: #f28132;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e07021;
+}
+
+/* Back Link */
+.back-link {
+    display: block;
+    margin-top: 25px;
+    text-decoration: none;
+    color: #f28132;
+    font-weight: 600;
+    font-size: 14px;
+}

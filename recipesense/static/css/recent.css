@@ -1,0 +1,12 @@
+.recipes-row {
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+}
+
+.mini-card {
+  min-width:160px;
+  background:#020617;
+  padding:10px;
+  border-radius:12px;
+}

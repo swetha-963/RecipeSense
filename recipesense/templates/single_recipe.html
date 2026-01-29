@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ recipe.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/single_recipe.css' %}">
+</head>
+
+<body>
+    {% csrf_token %}
+
+    <div class="overlay" onclick="closeModal(event)">
+
+        <div class="recipe-modal">
+
+            <!-- CLOSE -->
+            <button class="close-btn" onclick="goBack()">✕</button>
+
+            <!-- HERO -->
+            <div class="hero">
+                <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+
+                <div class="hero-overlay">
+                    <div class="badges">
+                        {% if recipe.glutenFree %}
+                        <span class="badge">Gluten-Free</span>
+                        {% endif %}
+                        {% if recipe.dairyFree %}
+                        <span class="badge">Dairy-Free</span>
+                        {% endif %}
+                    </div>
+
+                    <h1>{{ recipe.title }}</h1>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats">
+                <div class="stat">
+                    ⏱
+                    <strong>{{ recipe.readyInMinutes }}</strong>
+                    <span>Total Time</span>
+                </div>
+                <div class="stat">
+                    👥
+                    <strong>{{ recipe.servings }}</strong>
+                    <span>Servings</span>
+                </div>
+                <div class="stat">
+                    🔥
+                    <strong>{{ recipe.nutrition.nutrients.0.amount|floatformat:0 }}</strong>
+                    <span>Calories</span>
+                </div>
+                <div class="stat">
+                    💚
+                    <strong>{{ recipe.healthScore }}</strong>
+                    <span>Health Score</span>
+                </div>
+            </div>
+
+            <!-- SAVE -->
+            <button class="save-btn" onclick="toggleFavorite(this)" data-id="{{ recipe.id }}"
+                data-title="{{ recipe.title }}" data-image="{{ recipe.image }}" data-time="{{ recipe.readyInMinutes }}">
+                <span class="heart">♡</span> Save to Favorites
+            </button>
+
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab active" onclick="openTab('ingredients', this)">🛒 Ingredients</button>
+                <button class="tab" onclick="openTab('instructions', this)">👨‍🍳 Instructions</button>
+                <button class="tab" onclick="openTab('nutrition', this)">🔥 Nutrition</button>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <!-- INGREDIENTS -->
+                <div id="ingredients" class="tab-content active">
+                    {% for ing in recipe.extendedIngredients %}
+                    <div class="ingredient">
+                        <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ ing.image }}">
+                        <span>{{ ing.original }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- INSTRUCTIONS -->
+                <div id="instructions" class="tab-content">
+                    {{ recipe.instructions|safe }}
+                </div>
+
+                <!-- NUTRITION -->
+                <div id="nutrition" class="tab-content">
+                    {% for n in recipe.nutrition.nutrients %}
+                    <div class="nutrition-row">
+                        <span>{{ n.name }}</span>
+                        <strong>{{ n.amount }} {{ n.unit }}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function openTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function closeModal(e) {
+            if (e.target.classList.contains("overlay")) {
+                goBack();
+            }
+        }
+
+        function goBack() {
+            window.location.href = "{% url 'app:recipe_detail' %}";
+        }
+    </script>
+
+
+    <script>
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+        function toggleFavorite(btn) {
+            fetch("{% url 'app:toggle_favorite' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    recipe_id: btn.dataset.id,
+                    title: btn.dataset.title,
+                    image: btn.dataset.image,
+                    time: btn.dataset.time
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    btn.classList.toggle("active");
+                    btn.querySelector(".heart").textContent =
+                        data.status === "added" ? "♥" : "♡";
+                })
+                .catch(err => console.error(err));
+        }
+    </script>
+
+
+
+</body>
+
+</html>

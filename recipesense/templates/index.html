@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RecipeSense | Discover Recipes</title>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-left">
+
+      <!-- SVG LOGO -->
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="logo-svg">
+          <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
+          a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+          4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+          1.041V20a1 1 0 0 0 1 1Z" />
+          <path d="M6 17h12" />
+        </svg>
+      </div>
+
+      <!-- TEXT LOGO -->
+      <span class="logo-text">
+        Recipe<span class="highlight">Sense</span>
+      </span>
+
+    </div>
+
+    <nav class="nav-right">
+      <a href="{% url 'app:recipe_detail' %}" class="btn">
+        Find Recipes
+      </a>
+      {% if user.is_authenticated %}
+      <span class="nav-user">
+        👋 Hi, {{ user.first_name|default:"Chef" }}
+      </span>
+      <a href="{% url 'app:logout' %}" class="btn secondary">Logout</a>
+      {% else %}
+      <a href="{% url 'app:login' %}" class="btn secondary">Sign In</a>
+      <a href="{% url 'app:signup' %}" class="btn primary">Get Started</a>
+      {% endif %}
+    </nav>
+  </header>
+
+
+
+
+  <section class="hero">
+    <div class="hero-content">
+
+      <span class="badge">
+        ✨ Health-Aware Recipe Recommendations
+      </span>
+
+      <h1>
+        Discover Recipes Based on<br>
+        <span>What You Have</span>
+      </h1>
+
+      <p class="hero-text">
+        Enter your available ingredients and let our smart system recommend healthy,
+        delicious recipes tailored to your dietary needs and preferences.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{% url 'app:recipe_detail' %}" class="btn">
+          Start Cooking
+        </a>
+        <a href="{% url 'app:signup' %}" class="btn btn-outline">
+          Create Free Account
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- RECIPES -->
+  <section class="features-section">
+    <div class="features-header">
+      <h2>Smart Recipe Discovery</h2>
+      <p>
+        Our intelligent system helps you find the perfect recipe for any occasion,
+        considering your health goals and dietary restrictions.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon orange">
+          🔍
+        </div>
+        <h3>Ingredient-Based Search</h3>
+        <p>
+          Enter what you have in your kitchen and discover recipes you can make right now
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon green">
+          🍃
+        </div>
+        <h3>Health & Diet Filters</h3>
+        <p>
+          Filter by vegetarian, vegan, gluten-free, and more dietary preferences
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon red">
+          🍎
+        </div>
+        <h3>Nutrition Information</h3>
+        <p>
+          View calories, macros, and detailed nutritional data for every recipe
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon yellow">
+          ⏱
+        </div>
+        <h3>Time-Based Filtering</h3>
+        <p>
+          Find quick 15-minute meals or elaborate weekend cooking projects
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon orange">
+          ❤️
+        </div>
+        <h3>Save Your Favorites</h3>
+        <p>
+          Create your personal collection of go-to recipes for easy access
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon green">
+          🛡
+        </div>
+        <h3>Allergy Safe</h3>
+        <p>
+          Exclude allergens and get safe recipe recommendations for your needs
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <div class="cta-icon">
+        <!-- Chef hat SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
+        a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+        4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+        1.041V20a1 1 0 0 0 1 1Z" />
+          <path d="M6 17h12" />
+        </svg>
+      </div>
+
+      <h2>Ready to Cook Something Amazing?</h2>
+
+      <p>
+        Join thousands of users who have discovered healthier, tastier meals
+        with ingredients they already have.
+      </p>
+
+      <a href="{% url 'app:recipe_detail' %}" class="cta-btn">
+        🔍 Find Recipes
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <span class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
+      a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+      4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+      1.041V20a1 1 0 0 0 1 1Z" />
+            <path d="M6 17h12" />
+          </svg>
+        </span>
+
+        <span class="logo-text">
+          Recipe<span>Sense</span>
+        </span>
+      </div>
+
+
+      <p class="footer-center">
+        Made with <span>❤</span> for healthy eating
+      </p>
+
+      <div class="footer-links">
+        <a href="#">Search</a>
+        <a href="#">Sign In</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      Powered by Spoonacular API • Health-Aware Recipe Recommendation System
+      <br />
+      College Project 2024
+    </div>
+  </footer>
+
+
+</body>
+
+</html>

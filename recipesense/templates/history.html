@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recently Viewed</title>
+  <link rel="stylesheet" href="{% static 'css/history.css' %}">
+</head>
+<body>
+
+<header class="topbar">
+  <h2>🕒 Recently Viewed Recipes</h2>
+  <a href="{% url 'app:recipe_detail' %}" class="back-btn">← Back</a>
+</header>
+
+<main class="container">
+
+  {% if recipes %}
+    <div class="grid">
+      {% for r in recipes %}
+        <a href="{% url 'app:single_recipe' r.recipe_id %}" class="card">
+          <img src="{{ r.image }}" alt="{{ r.title }}">
+          <div class="info">
+            <h4>{{ r.title }}</h4>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="icon">👨‍🍳</div>
+      <h3>No recently viewed recipes</h3>
+      <p>Start cooking and your history will appear here.</p>
+    </div>
+  {% endif %}
+
+</main>
+
+</body>
+</html>

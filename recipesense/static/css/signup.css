@@ -1,0 +1,126 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* PAGE BACKGROUND */
+body {
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #f7f2ee,
+        #fdfaf7
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CARD */
+.card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem 2.5rem 2.2rem;
+    border-radius: 20px;
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.08),
+        0 10px 25px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    animation: fadeUp 0.6s ease;
+}
+
+/* TITLE */
+.card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3b2a1f;
+    margin-bottom: 1.8rem;
+}
+
+/* ERROR MESSAGE */
+.error {
+    background: #ffecec;
+    color: #b42318;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+}
+
+/* FORM */
+.card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+/* INPUTS */
+.card input {
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #e6dcd2;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.card input::placeholder {
+    color: #9c8f84;
+}
+
+.card input:focus {
+    border-color: #ea875c;
+    box-shadow: 0 0 0 4px rgba(234, 135, 92, 0.15);
+}
+
+/* BUTTON */
+.card button {
+    margin-top: 0.5rem;
+    padding: 0.95rem;
+    border-radius: 14px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #ea875c;
+    color: #000;
+    transition: all 0.3s ease;
+    box-shadow: 0 12px 30px rgba(234, 135, 92, 0.35);
+}
+
+.card button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(234, 135, 92, 0.45);
+}
+
+/* LINK */
+.card a {
+    display: inline-block;
+    margin-top: 1.6rem;
+    font-size: 0.95rem;
+    color: #6b5b4f;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card a:hover {
+    color: #ea875c;
+    text-decoration: underline;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
