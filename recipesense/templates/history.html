@@ -1,40 +1,47 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Recently Viewed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recently Viewed | RecipeSense</title>
   <link rel="stylesheet" href="{% static 'css/history.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<header class="topbar">
-  <h2>🕒 Recently Viewed Recipes</h2>
-  <a href="{% url 'app:recipe_detail' %}" class="back-btn">← Back</a>
-</header>
+  <!-- HEADER -->
+  <header class="topbar">
+    <h2>🕒 Recently Viewed Recipes</h2>
+    <a href="{% url 'app:recipe_detail' %}" class="back-btn">← Back to Search</a>
+  </header>
 
-<main class="container">
+  <!-- MAIN CONTENT -->
+  <main class="container">
 
-  {% if recipes %}
+    {% if recipes %}
     <div class="grid">
       {% for r in recipes %}
-        <a href="{% url 'app:single_recipe' r.recipe_id %}" class="card">
-          <img src="{{ r.image }}" alt="{{ r.title }}">
-          <div class="info">
-            <h4>{{ r.title }}</h4>
-          </div>
-        </a>
+      <a href="{% url 'app:single_recipe' r.recipe_id %}" class="card">
+        <img src="{{ r.image }}" alt="{{ r.title }}">
+        <div class="info">
+          <h4>{{ r.title }}</h4>
+        </div>
+      </a>
       {% endfor %}
     </div>
-  {% else %}
+    {% else %}
     <div class="empty">
       <div class="icon">👨‍🍳</div>
       <h3>No recently viewed recipes</h3>
-      <p>Start cooking and your history will appear here.</p>
+      <p>Start exploring and your history will appear here.</p>
     </div>
-  {% endif %}
+    {% endif %}
 
-</main>
+  </main>
 
 </body>
+
 </html>

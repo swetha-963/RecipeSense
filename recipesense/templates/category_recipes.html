@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{ category }} | RecipeSense</title>
+  <link rel="stylesheet" href="{% static 'css/category_recipes.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="logo">
+      <a href="{% url 'app:index' %}" style="text-decoration:none;color:inherit;">
+        🍳 <strong>RecipeSense</strong>
+      </a>
+    </div>
+
+    <nav>
+      <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
+      <a href="{% url 'app:favorites' %}">❤️ Favorites</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="padding:40px 20px;">
+    <h1>{{ category }}</h1>
+    <p>Curated healthy recipes just for you</p>
+  </section>
+
+  <main class="content">
+
+    {% if recipes %}
+    {% if error %}
+    <div class="api-error">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="recipes-grid">
+      {% for recipe in recipes %}
+      <a href="{% url 'app:single_recipe' recipe.id %}" class="recipe-card">
+        <div class="recipe-image">
+          {% if recipe.image %}
+          <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+          {% else %}
+          <div class="image-placeholder">🍽️</div>
+          {% endif %}
+        </div>
+
+        <div class="recipe-info">
+          <h3>{{ recipe.title }}</h3>
+          <p>⏱ {{ recipe.readyInMinutes }} min</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <h2>No recipes found</h2>
+      <p>Try another category</p>
+    </div>
+    {% endif %}
+
+  </main>
+
+</body>
+
+</html>

@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RecipeSense | Discover Recipes</title>
+  <title>RecipeSense | Discover Healthy Recipes</title>
+  <meta name="description"
+    content="Enter your available ingredients and discover healthy, delicious recipes tailored to your dietary needs and preferences.">
 
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -16,29 +18,26 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="nav-left">
-
-      <!-- SVG LOGO -->
+      <!-- Logo Icon -->
       <div class="logo-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="logo-svg">
-          <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
-          a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
-          4 4 0 0 0-2.134 7.588c.411.198.727.585.727
-          1.041V20a1 1 0 0 0 1 1Z" />
-          <path d="M6 17h12" />
-        </svg>
-      </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#f59e0b"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 
-      <!-- TEXT LOGO -->
+          <path d="M18 11a4 4 0 0 0-3-7
+           5 5 0 0 0-6 0
+           4 4 0 0 0-3 7" />
+          <path d="M6 11v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-6" />
+        </svg>
+
+
+      </div>
       <span class="logo-text">
         Recipe<span class="highlight">Sense</span>
       </span>
-
     </div>
 
     <nav class="nav-right">
-      <a href="{% url 'app:recipe_detail' %}" class="btn">
-        Find Recipes
-      </a>
+      <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
       {% if user.is_authenticated %}
       <span class="nav-user">
         👋 Hi, {{ user.first_name|default:"Chef" }}
@@ -51,12 +50,9 @@
     </nav>
   </header>
 
-
-
-
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-content">
-
       <span class="badge">
         ✨ Health-Aware Recipe Recommendations
       </span>
@@ -72,19 +68,17 @@
       </p>
 
       <div class="hero-buttons">
-        <a href="{% url 'app:recipe_detail' %}" class="btn">
-          Start Cooking
+        <a href="{% url 'app:recipe_detail' %}" class="btn primary">
+          🍳 Start Cooking
         </a>
         <a href="{% url 'app:signup' %}" class="btn btn-outline">
           Create Free Account
         </a>
       </div>
-
     </div>
   </section>
 
-
-  <!-- RECIPES -->
+  <!-- FEATURES SECTION -->
   <section class="features-section">
     <div class="features-header">
       <h2>Smart Recipe Discovery</h2>
@@ -96,79 +90,55 @@
 
     <div class="features-grid">
       <div class="feature-card">
-        <div class="icon orange">
-          🔍
-        </div>
+        <div class="icon orange">🔍</div>
         <h3>Ingredient-Based Search</h3>
-        <p>
-          Enter what you have in your kitchen and discover recipes you can make right now
-        </p>
+        <p>Enter what you have in your kitchen and discover recipes you can make right now</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon green">
-          🍃
-        </div>
+        <div class="icon green">🍃</div>
         <h3>Health & Diet Filters</h3>
-        <p>
-          Filter by vegetarian, vegan, gluten-free, and more dietary preferences
-        </p>
+        <p>Filter by vegetarian, vegan, gluten-free, and more dietary preferences</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon red">
-          🍎
-        </div>
+        <div class="icon red">🍎</div>
         <h3>Nutrition Information</h3>
-        <p>
-          View calories, macros, and detailed nutritional data for every recipe
-        </p>
+        <p>View calories, macros, and detailed nutritional data for every recipe</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon yellow">
-          ⏱
-        </div>
+        <div class="icon yellow">⏱</div>
         <h3>Time-Based Filtering</h3>
-        <p>
-          Find quick 15-minute meals or elaborate weekend cooking projects
-        </p>
+        <p>Find quick 15-minute meals or elaborate weekend cooking projects</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon orange">
-          ❤️
-        </div>
+        <div class="icon orange">❤️</div>
         <h3>Save Your Favorites</h3>
-        <p>
-          Create your personal collection of go-to recipes for easy access
-        </p>
+        <p>Create your personal collection of go-to recipes for easy access</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon green">
-          🛡
-        </div>
+        <div class="icon green">🛡</div>
         <h3>Allergy Safe</h3>
-        <p>
-          Exclude allergens and get safe recipe recommendations for your needs
-        </p>
+        <p>Exclude allergens and get safe recipe recommendations for your needs</p>
       </div>
     </div>
   </section>
 
 
+ 
   <!-- CTA SECTION -->
   <section class="cta-section">
     <div class="cta-box">
       <div class="cta-icon">
-        <!-- Chef hat SVG -->
         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white"
           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
-        a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
-        4 4 0 0 0-2.134 7.588c.411.198.727.585.727
-        1.041V20a1 1 0 0 0 1 1Z" />
+            a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+            4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+            1.041V20a1 1 0 0 0 1 1Z" />
           <path d="M6 17h12" />
         </svg>
       </div>
@@ -181,11 +151,12 @@
       </p>
 
       <a href="{% url 'app:recipe_detail' %}" class="cta-btn">
-        🔍 Find Recipes
+        🔍 Find Recipes Now
       </a>
     </div>
   </section>
 
+  
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-top">
@@ -194,13 +165,12 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
-      a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
-      4 4 0 0 0-2.134 7.588c.411.198.727.585.727
-      1.041V20a1 1 0 0 0 1 1Z" />
+              a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+              4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+              1.041V20a1 1 0 0 0 1 1Z" />
             <path d="M6 17h12" />
           </svg>
         </span>
-
         <span class="logo-text">
           Recipe<span>Sense</span>
         </span>
@@ -212,8 +182,8 @@
       </p>
 
       <div class="footer-links">
-        <a href="#">Search</a>
-        <a href="#">Sign In</a>
+        <a href="{% url 'app:recipe_detail' %}">Search</a>
+        <a href="{% url 'app:login' %}">Sign In</a>
       </div>
     </div>
 
@@ -222,6 +192,10 @@
       <br />
       College Project 2024
     </div>
+
+
+
+
   </footer>
 
 

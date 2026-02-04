@@ -3,23 +3,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/recent.css' %}">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recent Recipes | RecipeSense</title>
+  <link rel="stylesheet" href="{% static 'css/recent.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h2 class="section-title">🕒 Recently Viewed</h2>
-    <div class="recipes-row">
-        {% for recipe in recent %}
-        <div class="mini-card">
-            <img src="{{ recipe.image }}">
-            <p>{{ recipe.title }}</p>
-        </div>
-        {% endfor %}
+
+  <h2 class="section-title">🕒 Recently Viewed</h2>
+  
+  <div class="recipes-row">
+    {% for recipe in recent %}
+    <div class="mini-card">
+      <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+      <p>{{ recipe.title }}</p>
     </div>
+    {% empty %}
+    <p style="color: var(--text-muted); text-align: center; width: 100%;">No recent recipes yet</p>
+    {% endfor %}
+  </div>
 
 </body>
 

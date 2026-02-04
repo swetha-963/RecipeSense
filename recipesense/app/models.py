@@ -46,3 +46,16 @@ class RecentlyViewed(models.Model):
     image = models.URLField()
     viewed_at = models.DateTimeField(auto_now_add=True)
 
+
+
+
+class CachedRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe_id = models.IntegerField()
+    title = models.CharField(max_length=255)
+    image = models.URLField()
+    data = models.JSONField()   # full recipe JSON
+    saved_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title

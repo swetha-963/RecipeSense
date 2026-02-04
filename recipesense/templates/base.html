@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RecipeSense{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'app:index' %}" class="logo-icon">🍳</a>
+            <a href="{% url 'app:index' %}" class="logo-text">Recipe<span>Sense</span></a>
+        </div>
+
+        <div class="nav-right">
+            <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'app:favorites' %}">Favorites</a>
+            <a href="{% url 'app:recently_viewed' %}">History</a>
+            <span class="nav-user">Hi, {{ user.first_name|default:user.username }}</span>
+            <a href="{% url 'app:logout' %}" class="btn btn-outline">Logout</a>
+            {% else %}
+            <a href="{% url 'app:login' %}">Sign In</a>
+            <a href="{% url 'app:signup' %}" class="btn primary">Get Started</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-logo">
+                <div class="logo-icon">🍳</div>
+                <span class="logo-text">RecipeSense</span>
+            </div>
+
+            <div class="footer-center">
+                Made with <span>❤</span> for healthy living
+            </div>
+
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; {% now "Y" %} RecipeSense. All rights reserved.
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

@@ -1,33 +1,72 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>My Favorites</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favorites | RecipeSense</title>
   <link rel="stylesheet" href="{% static 'css/favorites.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<header class="topbar">
-  <h2>❤️ My Favorite Recipes</h2>
-  <a href="{% url 'app:recipe_detail' %}">← Back</a>
-</header>
+  <!-- HEADER -->
+  <header class="topbar">
+    <h2>❤️ My Favorite Recipes</h2>
+    <a href="{% url 'app:recipe_detail' %}">← Back to Search</a>
+  </header>
 
-<main class="favorites-grid">
-  {% for fav in favorites %}
-    <a href="{% url 'app:single_recipe' fav.recipe_id %}" class="fav-card">
-      <img src="{{ fav.image }}">
-      <div class="info">
-        <h3>{{ fav.title }}</h3>
-        <p>⏱ {{ fav.ready_in_minutes }} min</p>
-      </div>
-    </a>
-  {% empty %}
+  <!-- FAVORITES GRID -->
+  <main class="favorites-grid">
+    {% for fav in favorites %}
+    <div class="fav-card">
+
+      <!-- REMOVE BUTTON -->
+      <button type="button" class="remove-btn"
+        onclick="event.stopPropagation(); removeFavorite({{ fav.recipe_id }}, this);"
+        title="Remove from favorites">
+        ❤️
+      </button>
+
+      <a href="{% url 'app:single_recipe' fav.recipe_id %}">
+        <img src="{{ fav.image }}" alt="{{ fav.title }}">
+        <div class="info">
+          <h3>{{ fav.title }}</h3>
+          <p>⏱ {{ fav.ready_in_minutes }} min</p>
+        </div>
+      </a>
+
+    </div>
+    {% empty %}
     <div class="empty">
       <h3>No favorites yet</h3>
-      <p>Start saving recipes you love 🍳</p>
+      <p>Start saving recipes you love! 🍳</p>
     </div>
-  {% endfor %}
-</main>
+    {% endfor %}
+  </main>
+
+  <script>
+    function removeFavorite(recipeId, btn) {
+      fetch(`/favorites/remove/${recipeId}/`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            const card = btn.closest(".fav-card");
+            card.style.transform = "scale(0.8)";
+            card.style.opacity = "0";
+            setTimeout(() => card.remove(), 300);
+          }
+        });
+    }
+  </script>
 
 </body>
+
 </html>

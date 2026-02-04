@@ -3,96 +3,241 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Find Recipes</title>
-  <link rel="stylesheet" href="{% static 'css/recipe_detail.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Recipes | RecipeSense</title>
+    <link rel="stylesheet" href="{% static 'css/recipe_detail.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-  <header class="topbar">
-    <div class="logo">🍳 <strong>RecipeFinder</strong></div>
-    <nav>
-      <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
-      <a href="{% url 'app:favorites' %}">❤️ Favorites</a>
-      <a href="{% url 'app:recently_viewed' %}">🕒 Recently Viewed</a>
-      <a href="{% url 'app:login' %}">Sign In</a>
-      <a href="{% url 'app:signup' %}" class="btn-primary">Get Started</a>
-    </nav>
-  </header>
+    <!-- TOP NAVIGATION -->
+    <header class="topbar">
+        <a href="{% url 'app:index' %}" class="logo-link" aria-label="RecipeSense Home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="logo-svg" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
 
-  <section class="hero">
-    <h1>What's in Your Kitchen?</h1>
-    <p>Enter your ingredients and discover delicious recipes you can make</p>
+                <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041
+             a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0
+             4 4 0 0 0-2.134 7.588c.411.198.727.585.727
+             1.041V20a1 1 0 0 0 1 1Z" />
+                <path d="M6 17h12" />
+            </svg>
 
-    <form method="GET" class="search-bar">
-      <input type="text" name="ingredients" placeholder="e.g. chicken, tomato" value="{{ ingredients }}" required>
-      <button type="submit" class="btn primary">
-        🔍 Find Recipes
-      </button>
+            <span class="logo-text">
+                Recipe<span>Sense</span>
+            </span>
+        </a>
+
+        <nav>
+            <a href="{% url 'app:recipe_detail' %}">Find Recipes</a>
+            <a href="{% url 'app:favorites' %}">❤️ Favorites</a>
+            <a href="{% url 'app:recently_viewed' %}">🕒 Recently Viewed</a>
+            <a href="{% url 'app:login' %}">Sign In</a>
+            <a href="{% url 'app:signup' %}" class="btn-primary">Get Started</a>
+        </nav>
+    </header>
+
+    <form method="GET" class="search-form">
+
+        <!-- HERO SEARCH -->
+        <section class="hero">
+            <h1>What's in Your Kitchen?</h1>
+            <p>Enter your ingredients and discover delicious recipes you can make</p>
+
+            <div class="search-bar">
+                <input type="text" name="ingredients" placeholder="e.g. chicken, tomato, garlic"
+                    value="{{ ingredients }}" required>
+                <button type="submit" class="btn primary">
+                    🔍 Find Recipes
+                </button>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+
+            <!-- FILTERS -->
+            <aside class="filters">
+                <h3>🎛 Filters</h3>
+
+                <label>Diet Preference</label>
+                <select name="diet">
+                    <option value="">Any</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="gluten free">Gluten Free</option>
+                    <option value="ketogenic">Ketogenic</option>
+                    <option value="paleo">Paleo</option>
+                </select>
+
+                <label>Max Prep Time</label>
+                <select name="time">
+                    <option value="">Any</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2+ hours</option>
+                </select>
+
+                <button type="submit" class="apply-filters">
+                    Apply Filters
+                </button>
+            </aside>
+
+            <!-- RESULTS -->
+            {% if recipes %}
+            <div class="recipes-grid">
+                {% for recipe in recipes %}
+                {% if user.is_authenticated %}
+                <a href="{% url 'app:single_recipe' recipe.id %}" class="recipe-card">
+                    {% else %}
+                    <a href="{% url 'app:signup' %}?next={% url 'app:single_recipe' recipe.id %}" class="recipe-card">
+                        {% endif %}
+                        <div class="recipe-image">
+                            {% if recipe.image %}
+                            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+                            {% else %}
+                            <div class="image-placeholder">🍽️</div>
+                            {% endif %}
+
+                            {% if api_error %}
+                            <div class="api-error">
+                                ⚠️ {{ api_error }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+
+                        <div class="recipe-info">
+                            <h3>{{ recipe.title }}</h3>
+                            <p>⏱ {{ recipe.readyInMinutes }} min</p>
+
+                            <div class="match-info">
+                                <span class="matched">✅ {{ recipe.usedIngredientCount }} matched</span>
+                                <span class="missing">❌ {{ recipe.missedIngredientCount }} missing</span>
+                            </div>
+                        </div>
+
+                    </a>
+                    {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state-wrapper">
+                <div class="empty-state">
+                    <div class="empty-icon">👨‍🍳</div>
+                    <h2>No recipes found</h2>
+                    <p>Try different ingredients or filters</p>
+                </div>
+            </div>
+            {% endif %}
+
+        </main>
     </form>
 
-  </section>
 
-  <main class="content">
+    <script>
+        window.addEventListener("offline", () => {
+            alert("⚠️ You are offline. Showing saved recipes only.");
+        });
+    </script>
 
-    <!-- FILTERS -->
-    <aside class="filters">
-      <h3>Filters</h3>
 
-      <label>Diet Preference</label>
-      <select name="diet" form="filter-form">
-        <option value="">Any</option>
-        <option value="vegetarian">Vegetarian</option>
-        <option value="vegan">Vegan</option>
-        <option value="gluten free">Gluten Free</option>
-      </select>
+    <!-- HEALTHY RECIPES SECTION -->
+    <section class="healthy-section">
+        <div class="healthy-container">
 
-      <label>Max Prep Time</label>
-      <select name="time" form="filter-form">
-        <option value="">Any</option>
-        <option value="15">15 min</option>
-        <option value="30">30 min</option>
-        <option value="60">60 min</option>
-      </select>
-    </aside>
+            <h2 class="healthy-title">Healthy Recipes</h2>
+            <p class="healthy-desc">
+                Healthy, delicious recipes, including quick dinner, easy lunch ideas, snacks,
+                breakfast, soup and more, inspired by food & nutrition experts.
+            </p>
 
-    <!-- RECIPES RESULT SECTION -->
-    {% if recipes %}
-    <div class="recipes-grid">
+            <div class="healthy-grid">
+                <a href="{% url 'app:category_recipes' 'appetizer' %}" class="healthy-card">
+                    🥗 Healthy Appetizer Recipes
+                </a>
 
-      {% for recipe in recipes %}
-      <a href="{% url 'app:single_recipe' recipe.id %}" class="recipe-card">
+                <a href="{% url 'app:category_recipes' 'side-dish' %}" class="healthy-card">
+                    🍽 Healthy Side Dish Recipes
+                </a>
 
-        <div class="recipe-image">
-          <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+                <a href="{% url 'app:category_recipes' 'soup' %}" class="healthy-card">
+                    🍲 Healthy Soup Recipes
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'salad' %}" class="healthy-card">
+                    🥬 Healthy Salad Recipes
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'drink' %}" class="healthy-card">
+                    🥤 Healthy Drink Recipes
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'dessert' %}" class="healthy-card">
+                    🍪 Healthy Cookie & Dessert Recipes
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'weight-loss' %}" class="healthy-card">
+                    ⚖️ Recipes for Weight Loss & Diet
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'kids' %}" class="healthy-card">
+                    🧒 Healthy Kids Recipes
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'heritage' %}" class="healthy-card">
+                    🏺 Heritage Cooking
+                </a>
+
+                <a href="{% url 'app:category_recipes' 'sauce' %}" class="healthy-card">
+                    🧂 Healthy Sauce & Condiment Recipes
+                </a>
+            </div>
+
+
+
+
+            <!-- MEALS & COURSES SECTION -->
+            <div style="margin-top: 80px;">
+
+                <h2 class="healthy-title">Meals & Courses</h2>
+                <p class="healthy-desc">
+                    Browse recipes by meal time and course
+                </p>
+
+                <div class="healthy-grid">
+
+                    <a href="{% url 'app:category_recipes' 'breakfast' %}" class="healthy-card">
+                        🍳 Breakfast Recipes
+                    </a>
+
+                    <a href="{% url 'app:category_recipes' 'brunch' %}" class="healthy-card">
+                        🥞 Brunch Recipes
+                    </a>
+
+                    <a href="{% url 'app:category_recipes' 'lunch' %}" class="healthy-card">
+                        🥗 Lunch Recipes
+                    </a>
+
+                    <a href="{% url 'app:category_recipes' 'dinner' %}" class="healthy-card">
+                        🍽 Dinner Recipes
+                    </a>
+
+                    <a href="{% url 'app:category_recipes' 'dessert' %}" class="healthy-card">
+                        🍰 Dessert Recipes
+                    </a>
+
+                </div>
+            </div>
+
+
+
         </div>
-
-        <div class="recipe-info">
-          <h3>{{ recipe.title }}</h3>
-          <p>⏱ {{ recipe.readyInMinutes }} min</p>
-        </div>
-
-      </a>
-      {% endfor %}
-
-    </div>
-    {% else %}
-    <div class="empty-state-wrapper">
-      <div class="empty-state">
-        <div class="empty-icon">👨‍🍳</div>
-        <h2>No recipes found</h2>
-        <p>
-          Try adding different ingredients or adjusting your filters
-          to find more recipes.
-        </p>
-      </div>
-    </div>
-    {% endif %}
+    </section>
 
 
-
-  </main>
 
 </body>
 

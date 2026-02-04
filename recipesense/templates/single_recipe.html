@@ -4,24 +4,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ recipe.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }} | RecipeSense</title>
     <link rel="stylesheet" href="{% static 'css/single_recipe.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     {% csrf_token %}
 
     <div class="overlay" onclick="closeModal(event)">
-
         <div class="recipe-modal">
 
-            <!-- CLOSE -->
+            <!-- CLOSE BUTTON -->
             <button class="close-btn" onclick="goBack()">✕</button>
 
-            <!-- HERO -->
+            <!-- HERO IMAGE -->
             <div class="hero">
                 <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
-
                 <div class="hero-overlay">
                     <div class="badges">
                         {% if recipe.glutenFree %}
@@ -30,8 +30,13 @@
                         {% if recipe.dairyFree %}
                         <span class="badge">Dairy-Free</span>
                         {% endif %}
+                        {% if recipe.vegetarian %}
+                        <span class="badge">Vegetarian</span>
+                        {% endif %}
+                        {% if recipe.vegan %}
+                        <span class="badge">Vegan</span>
+                        {% endif %}
                     </div>
-
                     <h1>{{ recipe.title }}</h1>
                 </div>
             </div>
@@ -41,7 +46,7 @@
                 <div class="stat">
                     ⏱
                     <strong>{{ recipe.readyInMinutes }}</strong>
-                    <span>Total Time</span>
+                    <span>Minutes</span>
                 </div>
                 <div class="stat">
                     👥
@@ -60,12 +65,11 @@
                 </div>
             </div>
 
-            <!-- SAVE -->
+            <!-- SAVE BUTTON -->
             <button class="save-btn" onclick="toggleFavorite(this)" data-id="{{ recipe.id }}"
                 data-title="{{ recipe.title }}" data-image="{{ recipe.image }}" data-time="{{ recipe.readyInMinutes }}">
                 <span class="heart">♡</span> Save to Favorites
             </button>
-
 
             <!-- TABS -->
             <div class="tabs">
@@ -74,25 +78,25 @@
                 <button class="tab" onclick="openTab('nutrition', this)">🔥 Nutrition</button>
             </div>
 
-            <!-- CONTENT -->
+            <!-- TAB CONTENT -->
             <div class="content">
 
-                <!-- INGREDIENTS -->
+                <!-- INGREDIENTS TAB -->
                 <div id="ingredients" class="tab-content active">
                     {% for ing in recipe.extendedIngredients %}
                     <div class="ingredient">
-                        <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ ing.image }}">
+                        <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ ing.image }}" alt="{{ ing.name }}">
                         <span>{{ ing.original }}</span>
                     </div>
                     {% endfor %}
                 </div>
 
-                <!-- INSTRUCTIONS -->
+                <!-- INSTRUCTIONS TAB -->
                 <div id="instructions" class="tab-content">
                     {{ recipe.instructions|safe }}
                 </div>
 
-                <!-- NUTRITION -->
+                <!-- NUTRITION TAB -->
                 <div id="nutrition" class="tab-content">
                     {% for n in recipe.nutrition.nutrients %}
                     <div class="nutrition-row">
@@ -101,6 +105,28 @@
                     </div>
                     {% endfor %}
                 </div>
+                <!-- 
+        <div class="ai-helper">
+          <h3>🤖 Ask AI about this recipe</h3>
+
+          <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="question" placeholder="Can I replace butter with oil?" required>
+            <button type="submit">Ask</button>
+          </form>
+
+          {% if ai_reply %}
+          <div class="ai-answer">{{ ai_reply }}</div>
+          {% endif %}
+        </div> -->
+
+                {% if ai_answer %}
+                <div class="ai-response">
+                    <strong>🤖 Cooking Assistant:</strong>
+                    <p>{{ ai_answer }}</p>
+                </div>
+                {% endif %}
+
 
             </div>
 
@@ -124,16 +150,15 @@
         function goBack() {
             window.location.href = "{% url 'app:recipe_detail' %}";
         }
-    </script>
 
 
-    <script>
+
         function getCSRFToken() {
             return document.querySelector('[name=csrfmiddlewaretoken]').value;
         }
 
         function toggleFavorite(btn) {
-            fetch("{% url 'app:toggle_favorite' %}", {
+            fetch("{% url 'app:toggle_favorite' recipe.id %}", {
                 method: "POST",
                 headers: {
                     "X-CSRFToken": getCSRFToken(),
@@ -149,14 +174,11 @@
                 .then(res => res.json())
                 .then(data => {
                     btn.classList.toggle("active");
-                    btn.querySelector(".heart").textContent =
-                        data.status === "added" ? "♥" : "♡";
+                    btn.querySelector(".heart").textContent = data.status === "added" ? "♥" : "♡";
                 })
                 .catch(err => console.error(err));
         }
     </script>
-
-
 
 </body>
 
