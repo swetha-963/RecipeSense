@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Favorite, RecentlyViewed
 from requests.exceptions import RequestException
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 # ==================================================
@@ -157,8 +158,13 @@ def login_view(request):
     return render(request, "login.html", {"next": next_url})
 
 
+
 def signup(request):
     next_url = request.GET.get("next") or request.POST.get("next")
+
+    # Treat "None" and empty values as no redirect destination
+    if next_url and next_url.strip().lower() in ("none", "null"):
+        next_url = None
 
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
@@ -171,12 +177,14 @@ def signup(request):
                 "next": next_url
             })
 
-        if User.objects.filter(username=email).exists():
+        # Check whether this email is already registered
+        if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
             return render(request, "signup.html", {
                 "error": "User already exists",
                 "next": next_url
             })
 
+        # Create new account
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -185,12 +193,16 @@ def signup(request):
         )
 
         login(request, user)
-        
-        # ✅ Prioritize explicit 'next' destination (e.g. recipe page)
-        if next_url:
-             return redirect(next_url)
 
-        # ✅ Restore previous search if no specific destination
+        # Redirect to the requested internal page if valid
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url,
+            allowed_hosts={request.get_host()},
+            require_https=request.is_secure()
+        ):
+            return redirect(next_url)
+
+        # Restore previous ingredient search
         last_ingredients = request.session.get("last_ingredients")
 
         if last_ingredients:
@@ -199,6 +211,7 @@ def signup(request):
         return redirect("app:recipe_detail")
 
     return render(request, "signup.html", {"next": next_url})
+
 
 
 

@@ -21,10 +21,12 @@
 
     {% if error %}<p class="error">{{ error }}</p>{% endif %}
 
-    <form method="POST" action="{% url 'app:signup' %}?next={{ next }}">
-      {% csrf_token %}
+<form method="POST" action="{% url 'app:signup' %}{% if next %}?next={{ next|urlencode }}{% endif %}">
+    {% csrf_token %}
 
-      <input type="hidden" name="next" value="{{ next }}">
+    {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
 
       <div>
         <label>Name</label>
